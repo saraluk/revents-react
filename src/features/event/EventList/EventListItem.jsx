@@ -12,10 +12,8 @@ export default class EventListItem extends Component {
             <Item>
               <Item.Image size='tiny' circular src={event.hostPhotoURL} />
               <Item.Content>
-                <Item.Header as='a'>Event Title</Item.Header>
-                <Item.Description>
-                  Hosted by <a>{event.hostedBy}</a>
-                </Item.Description>
+                <Item.Header>{event.title}</Item.Header>
+                <Item.Description>Hosted by {event.hostedBy}</Item.Description>
               </Item.Content>
             </Item>
           </Item.Group>
@@ -28,9 +26,11 @@ export default class EventListItem extends Component {
         </Segment>
         <Segment secondary>
           <List horizontal>
-            {event.attendees.map(attendee => (
-              <EventListAttendee key={attendee.id} attendee={attendee} />
-            ))}
+            {//if the event.attendee is undefined, then it is not true, and the right hand side of this will not be executed
+            event.attendees &&
+              event.attendees.map(attendee => (
+                <EventListAttendee key={attendee.id} attendee={attendee} />
+              ))}
           </List>
         </Segment>
         <Segment clearing>

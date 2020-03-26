@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Grid, Button } from "semantic-ui-react";
 import EventList from "../EventList/EventList";
 import EventForm from "../EventForm/EventForm";
+import cuid from "cuid";
 
 const eventsFromDashBoard = [
   {
@@ -65,6 +66,17 @@ class EventDashboard extends Component {
       isOpen: !isOpen
     }));
   };
+
+  //A funtion to handle created new event, then we pass down the function as props to EventForm
+  handleCreateEvent = newEvent => {
+    newEvent.id = cuid(); // Create unique id
+    newEvent.hostPhotoURL = "/assets/user.png"; //set up temporary hostPhotoURL
+    this.setState(({ events }) => ({
+      //events here is from previous state
+      events: [...events, newEvent] //create a new array with the element in the event array at previous state and newEvent
+    }));
+  };
+
   render() {
     const { events, isOpen } = this.state;
     return (
@@ -78,7 +90,12 @@ class EventDashboard extends Component {
             positive
             content='Create Event'
           />
-          {isOpen && <EventForm cancelFormOpen={this.handleIsOpenToggle} />}
+          {isOpen && (
+            <EventForm
+              createEvent={this.handleCreateEvent}
+              cancelFormOpen={this.handleIsOpenToggle}
+            />
+          )}
         </Grid.Column>
       </Grid>
     );

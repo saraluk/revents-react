@@ -4,7 +4,7 @@ import EventListAttendee from "./EventListAttendee";
 
 export default class EventListItem extends Component {
   render() {
-    const { event } = this.props; //destructure
+    const { event, selectEvent } = this.props; //destructure
     return (
       <Segment.Group>
         <Segment>
@@ -28,14 +28,21 @@ export default class EventListItem extends Component {
           <List horizontal>
             {//if the event.attendee is undefined, then it is not true, and the right hand side of this will not be executed
             event.attendees &&
-              event.attendees.map(attendee => (
+              event.attendees.map((attendee) => (
                 <EventListAttendee key={attendee.id} attendee={attendee} />
               ))}
           </List>
         </Segment>
         <Segment clearing>
           <span>{event.description}</span>
-          <Button as='a' color='teal' floated='right' content='View' />
+          <Button
+            //To pass a parameter to a selectEvent function, we need to wrap selectEvent(event) into an arrow function so that it isn't immediately executed when we render this component
+            onClick={() => selectEvent(event)}
+            as='a'
+            color='teal'
+            floated='right'
+            content='View'
+          />
         </Segment>
       </Segment.Group>
     );

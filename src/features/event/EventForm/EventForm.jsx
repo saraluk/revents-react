@@ -22,7 +22,14 @@ export default class EventForm extends Component {
 
   handleFormSubmit = (evt) => {
     evt.preventDefault();
-    this.props.createEvent(this.state);
+    //check if we already have the id of the selectedEvent, we get id of selectedEvent when componentDidMount() is called because of ...this.props.selectedEvent
+    if (this.state.id) {
+      this.props.updateEvent(this.state);
+    }
+    //if the event id doesn't exist, we create as new event
+    else {
+      this.props.createEvent(this.state);
+    }
   };
 
   handleInputChange = ({ target: { name, value } }) => {
